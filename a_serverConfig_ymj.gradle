@@ -1,0 +1,33 @@
+ext {
+
+    sit_ymj = [
+            SERVER_URL        : "http://192.168.1.13:9001",//Server
+            UPLOAD_URL        : "http://192.168.1.13:10026/pic-app/picture/restMutilPic",//影像系统
+            WEB_URL           : "http://192.168.1.11:8081/credit-ymj-sit/index.html",//H5入口
+            EXAMPLE_URL       : "http://192.168.1.11:8081/credit-ymj-sit/view/document/identExamp.html",//实名认证示例
+            SYS_UPDATE_URL    : "http://192.168.1.11:8081/credit-ymj-sit/view/document/upgrade.html",//系统升级页
+            USUAL_QUESTION_URL: "http://192.168.1.11:8081/credit-ymj-sit-ymj-sit/view/document/QA.html?pageType=app",//常见问题
+            PULL_TIME_URL     : "http://192.168.1.13:9005/pss-frontend/S1102",//上传点击统计的地址
+    ]
+
+    uat_ymj = [
+            SERVER_URL        : "http://192.168.1.11:8081/app-front",//Server
+            UPLOAD_URL        : "http://192.168.1.11:10026/pic-app/picture/restMutilPic",//影像系统
+            WEB_URL           : "http://192.168.1.11:8081/credit-ymj/index.html",//H5入口
+            EXAMPLE_URL       : "http://192.168.1.11:8081/credit-ymj/view/document/identExamp.html",//实名认证示例
+            SYS_UPDATE_URL    : "http://192.168.1.11:8081/credit-ymj/view/document/upgrade.html",//系统升级页
+            USUAL_QUESTION_URL: "http://192.168.1.11:8081/credit-ymj/view/document/QA.html?pageType=app",//常见问题
+            PULL_TIME_URL     : "http://192.168.1.11:9005/pss-frontend/S1102",//上传点击统计的地址
+    ]
+
+    release_ymj = [
+            SERVER_URL        : "https://credit.yxjr360.com:5210",//Server
+            UPLOAD_URL        : "https://credit.yxjr360.com:13200/pic-app/picture/restMutilPic",//影像系统
+            WEB_URL           : "https://credit.yxjr360.com/credit-ymj/index.html",//H5入口
+            EXAMPLE_URL       : "https://credit.yxjr360.com/credit-ymj/view/document/identExamp.html",//实名认证示例
+            SYS_UPDATE_URL    : "https://credit.yxjr360.com/credit-ymj/view/document/upgrade.html",//系统升级页
+            USUAL_QUESTION_URL: "https://credit.yxjr360.com/credit-ymj/view/document/QA.html?pageType=app",//常见问题
+            PULL_TIME_URL     : "https://credit.yxjr360.com:443/pss-frontend/S1102",//上传点击统计的地址
+    ]
+
+}

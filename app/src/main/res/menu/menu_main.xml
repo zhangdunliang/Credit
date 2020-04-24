@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/get_user"
+        android:orderInCategory="100"
+        android:title="获取用户信息[必须先调用]"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/get_account"
+        android:orderInCategory="100"
+        android:title="获取账户信息"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/get_contract"
+        android:orderInCategory="100"
+        android:title="获取合同信息"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/get_param"
+        android:orderInCategory="100"
+        android:title="获取参数信息"
+        app:showAsAction="never" />
+</menu>

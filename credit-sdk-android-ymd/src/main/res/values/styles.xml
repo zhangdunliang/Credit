@@ -1,0 +1,9 @@
+<resources>
+
+  <style name="custom_button" parent="android:Widget.Button">
+        <item name="android:background">@drawable/yxjr_credit_btn_select</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#ffffffff</item>
+    </style>
+
+</resources>

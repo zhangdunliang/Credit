@@ -1,0 +1,107 @@
+apply plugin: 'com.android.library'
+
+def sdkParam = rootProject.ext.sdkParam
+def server = rootProject.ext
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField 'String', 'YMD_SDK_VERSION', '"' + sdkParam.ymd_version + '"'//赋值sdk版本号
+    }
+
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    publishNonDefault true//注意，这里的配置是为了去除gradle对library module默认只编译release buildType的限制
+
+    //不同版本服务地址、参数配置
+    productFlavors {
+        ymd_sit {
+            buildConfigField 'String', 'YMD_SERVER_URL', '"' + server.sit_ymd.SERVER_URL + '"'
+            buildConfigField 'String', 'YMD_UPLOAD_URL', '"' + server.sit_ymd.UPLOAD_URL + '"'
+            buildConfigField 'String', 'YMD_WEB_URL', '"' + server.sit_ymd.WEB_URL + '"'
+            buildConfigField 'String', 'YMD_EXAMPLE_URL', '"' + server.sit_ymd.EXAMPLE_URL + '"'
+            buildConfigField 'String', 'YMD_SYS_UPDATE_URL', '"' + server.sit_ymd.SYS_UPDATE_URL + '"'
+            buildConfigField 'String', 'YMD_USUAL_QUESTION_URL', '"' + server.sit_ymd.USUAL_QUESTION_URL + '"'
+            buildConfigField 'String', 'YMD_PULL_TIME_URL', '"' + server.sit_ymd.PULL_TIME_URL + '"'
+            buildConfigField 'boolean', 'YMD_RELEASE', "false"
+        }
+        ymd_uat {
+            buildConfigField 'String', 'YMD_SERVER_URL', '"' + server.uat_ymd.SERVER_URL + '"'
+            buildConfigField 'String', 'YMD_UPLOAD_URL', '"' + server.uat_ymd.UPLOAD_URL + '"'
+            buildConfigField 'String', 'YMD_WEB_URL', '"' + server.uat_ymd.WEB_URL + '"'
+            buildConfigField 'String', 'YMD_EXAMPLE_URL', '"' + server.uat_ymd.EXAMPLE_URL + '"'
+            buildConfigField 'String', 'YMD_SYS_UPDATE_URL', '"' + server.uat_ymd.SYS_UPDATE_URL + '"'
+            buildConfigField 'String', 'YMD_USUAL_QUESTION_URL', '"' + server.uat_ymd.USUAL_QUESTION_URL + '"'
+            buildConfigField 'String', 'YMD_PULL_TIME_URL', '"' + server.uat_ymd.PULL_TIME_URL + '"'
+            buildConfigField 'boolean', 'YMD_RELEASE', "false"
+        }
+        ymd_rle {
+            buildConfigField 'String', 'YMD_SERVER_URL', '"' + server.release_ymd.SERVER_URL + '"'
+            buildConfigField 'String', 'YMD_UPLOAD_URL', '"' + server.release_ymd.UPLOAD_URL + '"'
+            buildConfigField 'String', 'YMD_WEB_URL', '"' + server.release_ymd.WEB_URL + '"'
+            buildConfigField 'String', 'YMD_EXAMPLE_URL', '"' + server.release_ymd.EXAMPLE_URL + '"'
+            buildConfigField 'String', 'YMD_SYS_UPDATE_URL', '"' + server.release_ymd.SYS_UPDATE_URL + '"'
+            buildConfigField 'String', 'YMD_USUAL_QUESTION_URL', '"' + server.release_ymd.USUAL_QUESTION_URL + '"'
+            buildConfigField 'String', 'YMD_PULL_TIME_URL', '"' + server.release_ymd.PULL_TIME_URL + '"'
+            buildConfigField 'boolean', 'YMD_RELEASE', "true"
+        }
+    }
+
+    //输出aar文件重命名
+    libraryVariants.all {
+        variant ->
+            variant.outputs.each {
+                output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.aar')) {
+                        //credit-sdk-android-版本号-环境
+                        def fileName = "credit-sdk-android-${sdkParam.ymd_version}-${variant.flavorName}"
+                        def outputPath = "../output/aar/ymd${sdkParam.ymd_version}";
+                        copy {
+                            from outputFile
+                            into outputPath
+                            rename { fileName + ".aar" }
+                        }
+                    }
+            }
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'// aar目录
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    //    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    //        exclude group: 'com.android.support', module: 'support-annotations'
+    //    })
+    //    compile 'com.android.support:appcompat-v7:25.3.1'
+    //    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+
+    //SDK使用的外部SDK
+    compile files('libs/fm-sdk-3.0.7.jar')
+    compile files('libs/idcardquality-proguard-1.2.0.jar')
+    compile files('libs/licensemanager-v1.1.jar')
+    compile files('libs/livenessdetection-proguard-2.4.4.jar')
+    compile files('libs/moxie-client-1.3.5.4.jar')
+    compile files('libs/eventbus-3.0.0.jar')
+    compile files('libs/x5_webview_v3.3.0.jar')
+}

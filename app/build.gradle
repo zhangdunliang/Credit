@@ -1,0 +1,157 @@
+apply plugin: 'com.android.application'
+
+def sdkParam = rootProject.ext.sdkParam
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+
+        }
+    }
+
+    //多个版本的参数配置
+    productFlavors {
+        ymd_sit {
+            applicationId "com.ymd.sit" + sdkParam.ymd_versionCode//包名[com.ymd.sit+versionCode]
+//            applicationId "com.ruimin.phonewallet"//包名[com.ymd.sit+versionCode]
+            manifestPlaceholders = [
+                    app_name: "ymd" + sdkParam.ymd_version,//[ymd+version]
+                    app_ic  : "@mipmap/sit_ic_launcher" //sit APP图标
+            ]
+        }
+        ymd_uat {
+            applicationId "com.ymd.uat" + sdkParam.ymd_versionCode //[com.ymd.uat+versionCode]
+            manifestPlaceholders = [
+                    app_name: "ymd" + sdkParam.ymd_version,//[ymd+version]
+                    app_ic  : "@mipmap/uat_ic_launcher" //uat APP图标
+            ]
+        }
+        ymd_rle {
+            applicationId "com.ruimin.phonewallet" //com.ruimin.phonewallet 确保与生产一致
+            manifestPlaceholders = [
+                    app_name: "ymd" + sdkParam.ymd_version,//[ymd+version]
+                    app_ic  : "@mipmap/rle_ic_launcher" //rle APP图标
+            ]
+        }
+        ymj_sit {
+            applicationId "com.ymj.sit" + sdkParam.ymj_versionCode//包名[com.ymj.sit+versionCode]
+            manifestPlaceholders = [
+                    app_name: "ymj" + sdkParam.ymj_version,//[ymj+version]
+                    app_ic  : "@mipmap/sit_ic_launcher" //sit APP图标
+            ]
+        }
+        ymj_uat {
+            applicationId "com.ymj.uat" + sdkParam.ymj_versionCode //[com.ymj.sitversionCode]
+            manifestPlaceholders = [
+                    app_name: "ymj" + sdkParam.ymj_version,//[ymj+version]
+                    app_ic  : "@mipmap/uat_ic_launcher" //uat APP图标
+            ]
+        }
+        ymj_rle {
+            applicationId "com.yxjr.yimiaojie" //com.yxjr.yimiaojie 确保与生产一致
+            manifestPlaceholders = [
+                    app_name: "ymj" + sdkParam.ymj_version,//[ymj+version]
+                    app_ic  : "@mipmap/rle_ic_launcher" //rle APP图标
+            ]
+        }
+    }
+
+    sourceSets {
+        ymd_sit {
+            manifest.srcFile 'src/main_ymd/AndroidManifest.xml'
+            java.srcDirs += 'src/main_ymd/java/'
+        }
+        ymd_uat {
+            manifest.srcFile 'src/main_ymd/AndroidManifest.xml'
+            java.srcDirs += 'src/main_ymd/java/'
+        }
+        ymd_rle {
+            manifest.srcFile 'src/main_ymd/AndroidManifest.xml'
+            java.srcDirs += 'src/main_ymd/java/'
+        }
+        ymj_sit {
+            manifest.srcFile 'src/main_ymj/AndroidManifest.xml'
+            java.srcDirs += 'src/main_ymj/java/'
+        }
+        ymj_uat {
+            manifest.srcFile 'src/main_ymj/AndroidManifest.xml'
+            java.srcDirs += 'src/main_ymj/java/'
+        }
+        ymj_rle {
+            manifest.srcFile 'src/main_ymj/AndroidManifest.xml'
+            java.srcDirs += 'src/main_ymj/java/'
+        }
+
+    }
+
+    //输出apk文件重命名
+    android.applicationVariants.all {
+        variant ->
+            variant.outputs.each {
+                output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        //ymd(ymj)-sdk版本-环境
+                        def fileName = outputFile.name.replace("app", "${variant.productFlavors.applicationId}")
+                        def outputPath = "../output/apk" + "/${sdkParam.version}";
+                        copy {//copy份新的，以版本号分别存储
+                            from outputFile
+                            into outputPath
+                            rename { fileName }
+                        }
+                    }
+            }
+    }
+
+    //生产与测试环境key切换 如同盾
+    //环境地址切换 OK
+    //版本号切换 OK
+
+    //apk文件名重命名 OK
+    //指定apk文件输出位置 OK
+
+    //aar文件重命名 OK
+    //指定aar文件输出位置 OK
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'// aar目录
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:multidex:1.0.0'
+    testCompile 'junit:junit:4.12'
+
+    //不同版本对应不同aar包------YMD
+    ymd_sitCompile project(path: ':credit-sdk-android-ymd', configuration: 'ymd_sitDebug')
+    ymd_uatCompile project(path: ':credit-sdk-android-ymd', configuration: 'ymd_uatDebug')
+    ymd_rleCompile project(path: ':credit-sdk-android-ymd', configuration: 'ymd_rleDebug')
+
+    //不同版本对应不同aar包------YMJ
+    ymj_sitCompile project(path: ':credit-sdk-android-ymj', configuration: 'ymj_sitDebug')
+    ymj_uatCompile project(path: ':credit-sdk-android-ymj', configuration: 'ymj_uatDebug')
+    ymj_rleCompile project(path: ':credit-sdk-android-ymj', configuration: 'ymj_rleDebug')
+    //
+}

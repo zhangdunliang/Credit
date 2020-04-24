@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.yixin.test">
+
+    <!-- 益芯信贷权限配置开始 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- WIFI网络状态信息权限 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 改变wifi网络状态权限 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- 有关通讯录权限 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <!-- 有关短信权限 -->
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <!-- 获取地理位置权限 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" /> -->
+    <!-- 允许读取手机状态的权限 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 调用相机 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- 写入外部存储 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 读写通话记录 -->
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
+    <!-- 读取浏览器历史记录和书签 -->
+    <uses-permission android:name="com.android.browser.permission.READ_HISTORY_BOOKMARKS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <!-- 魔蝎权限start -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+
+    <!-- 魔蝎权限end -->
+    <!-- 益芯信贷权限配置结束 -->
+    <application
+        android:name=".YmjApplication"
+        android:allowBackup="true"
+        android:icon="${app_ic}"
+        android:label="${app_name}"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon, android:label">
+        <meta-data
+            android:name="RELEASE_CHANNEL"
+            android:value="test" />
+
+        <activity android:name=".MyTestActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 益芯信贷配置开始 -->
+        <!-- 同盾start -->
+        <meta-data
+            android:name="PARTNER_CODE"
+            android:value="yxjr" />
+        <!-- 同盾end -->
+        <activity
+            android:name="com.yxjr.credit.ui.YxEntryActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.yxjr.credit.ui.CameraActivity" />
+
+        <service android:name="com.yxjr.credit.service.YxService" />
+        <!-- Face++ start-->
+        <!-- idcard -->
+        <activity
+            android:name="com.yxjr.credit.ui.ScanIDCardActivity"
+            android:configChanges="keyboard|screenSize|orientation|layoutDirection"
+            android:screenOrientation="landscape" />
+        <!-- live -->
+        <activity
+            android:name="com.yxjr.credit.ui.LivenessActivity"
+            android:hardwareAccelerated="true" />
+        <!-- Face++ end-->
+        <!-- 益芯信贷配置结束 -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.ruimin.phonewallet.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths" />
+        </provider>
+    </application>
+
+</manifest>

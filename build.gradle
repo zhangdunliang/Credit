@@ -1,0 +1,24 @@
+apply from: "a_paramConfig.gradle"//全局参数配置
+apply from: "a_serverConfig_ymd.gradle"//益秒到SDK服务配置
+apply from: "a_serverConfig_ymj.gradle"//益秒借SDK服务配置
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.2'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+
